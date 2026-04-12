@@ -1,0 +1,11 @@
+services:
+  web:
+    build:
+      args:
+        # In standalone dev mode (without the nginx proxy from mediaflow/),
+        # point directly to the API container port.
+        - PUBLIC_API_BASE_URL=${PUBLIC_API_BASE_URL:-http://localhost:8000}
+        - PUBLIC_APP_NAME=${PUBLIC_APP_NAME:-MediaFlow}
+    ports:
+      - "${PUBLIC_APP_PORT:-4321}:80"
+    restart: "no"

@@ -7,6 +7,12 @@ COPY package*.json ./
 RUN npm ci --ignore-scripts
 
 COPY . .
+
+ARG PUBLIC_API_BASE_URL=http://localhost:8000
+ARG PUBLIC_APP_NAME=MediaFlow
+ENV PUBLIC_API_BASE_URL=$PUBLIC_API_BASE_URL
+ENV PUBLIC_APP_NAME=$PUBLIC_APP_NAME
+
 RUN npm run build
 
 # ── Stage 2: serve ────────────────────────────────────────────────────────────

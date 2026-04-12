@@ -16,6 +16,7 @@ import {
   Shield,
   Clock,
   ArrowRight,
+  Images,
   CheckCircle2,
   Layers,
 } from 'lucide-react';
@@ -38,6 +39,18 @@ const FEATURES = [
     title: 'Resize Image',
     description: 'Scale to exact dimensions with cover, contain, or fill strategies while preserving aspect ratio.',
     badge: 'Image',
+  },
+  {
+    icon: <Layers className="h-5 w-5" />,
+    title: 'Convert to Format',
+    description: 'Convert any image to PNG, JPG, GIF, BMP, TIFF, WebP, or AVIF with a single click.',
+    badge: 'Image',
+  },
+  {
+    icon: <Images className="h-5 w-5" />,
+    title: 'Batch Processing',
+    description: 'Convert up to 20 images at once to WebP, AVIF, or any format. Each file runs as an independent job.',
+    badge: 'Batch',
   },
   {
     icon: <FileVideo className="h-5 w-5" />,

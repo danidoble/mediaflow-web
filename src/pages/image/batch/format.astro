@@ -1,0 +1,8 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { ImageBatchFormatPage } from '../../../components/image/ImageBatchFormatPage';
+import '../../../styles/global.css';
+---
+<Layout title="Batch Convert to Format">
+  <ImageBatchFormatPage client:only="react" />
+</Layout>

@@ -20,7 +20,9 @@
             "listen": "prerequest",
             "script": {
                 "type": "text/javascript",
-                "exec": [""]
+                "exec": [
+                    ""
+                ]
             }
         },
         {
@@ -118,8 +120,15 @@
                         },
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/auth/register",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "auth", "register"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "register"
+                            ]
                         },
                         "description": "Create a new user account.\n\nOn success (`201 Created`), the response contains `data.tokens` and `data.user`. The test script automatically saves `accessToken`, `refreshToken`, and `userId` to collection variables.\n\n**Request Body:**\n\n| Field | Type | Required | Constraints |\n|---|---|---|---|\n| `email` | string | ✓ | Valid email format |\n| `password` | string | ✓ | Min 1 character |\n\n**Response:**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"user\": { \"id\": \"...\", \"email\": \"...\", \"is_active\": true, \"created_at\": \"...\" },\n    \"tokens\": { \"access_token\": \"...\", \"refresh_token\": \"...\", \"token_type\": \"bearer\" }\n  },\n  \"message\": \"Registration successful\"\n}\n```"
                     },
@@ -183,8 +192,15 @@
                         },
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/auth/login",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "auth", "login"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "login"
+                            ]
                         },
                         "description": "Authenticate and obtain a token pair (OAuth2 Password Flow).\n\n> ⚠️ This endpoint uses `application/x-www-form-urlencoded` (not JSON) and returns a **flat** OAuth2 token response instead of the standard envelope.\n\n**Request Body (form-encoded):**\n\n| Field | Type | Required | Description |\n|---|---|---|---|\n| `username` | string | ✓ | User email (OAuth2 spec uses this field name) |\n| `password` | string | ✓ | User password |\n\n**Response:**\n```json\n{\n  \"access_token\": \"...\",\n  \"refresh_token\": \"...\",\n  \"token_type\": \"bearer\"\n}\n```\n\nBoth tokens are saved automatically by the test script."
                     },
@@ -237,8 +253,15 @@
                         },
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/auth/refresh",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "auth", "refresh"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "refresh"
+                            ]
                         },
                         "description": "Exchange a valid refresh token for a new access/refresh token pair. Use this when the access token expires (default TTL: 30 min).\n\nThe new tokens are saved automatically by the test script.\n\n**Request Body:**\n\n| Field | Type | Required | Description |\n|---|---|---|---|\n| `refresh_token` | string | ✓ | A valid, non-expired refresh token |"
                     },
@@ -288,8 +311,15 @@
                         "header": [],
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/auth/me",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "auth", "me"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "me"
+                            ]
                         },
                         "description": "Returns the profile of the currently authenticated user. Requires a valid `accessToken` (inherited from collection-level Bearer auth).\n\n**Response:**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"id\": \"...\",\n    \"email\": \"user@example.com\",\n    \"is_active\": true,\n    \"created_at\": \"2026-01-01T00:00:00\"\n  }\n}\n```"
                     },
@@ -327,8 +357,14 @@
                         "header": [],
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/health",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "health"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "health"
+                            ]
                         },
                         "description": "Checks all system dependencies in parallel and returns their individual status.\n\nAlways returns `200 OK` — inspect individual component statuses in the response body to detect degraded services.\n\n**Response:**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"database\": \"ok\",\n    \"redis\": \"ok\",\n    \"minio\": \"ok\",\n    \"ffmpeg\": \"ok\",\n    \"cwebp\": \"ok\"\n  },\n  \"message\": \"All systems operational\"\n}\n```"
                     },
@@ -394,8 +430,16 @@
                         },
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/image/convert/webp",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "image", "convert", "webp"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "image",
+                                "convert",
+                                "webp"
+                            ]
                         },
                         "description": "Convert an image to **WebP** format using `cwebp`. The conversion runs in a background Celery worker.\n\n**Parameters:**\n\n| Field | Type | Default | Description |\n|---|---|---|---|\n| `file` | File | — | Image file to convert |\n| `quality` | int | 80 | Compression quality (0–100) |\n| `lossless` | bool | false | Lossless compression mode |\n\n**Response (`202 Accepted`):**\n```json\n{\n  \"success\": true,\n  \"data\": { \"job_id\": \"<uuid>\", \"status\": \"pending\" },\n  \"message\": \"Job queued\"\n}\n```\n\nThe `jobId` collection variable is auto-saved. Poll **Get Job Status** for the result."
                     },
@@ -445,8 +489,16 @@
                         },
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/image/convert/avif",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "image", "convert", "avif"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "image",
+                                "convert",
+                                "avif"
+                            ]
                         },
                         "description": "Convert an image to **AVIF** format using FFmpeg with the `libaom-av1` encoder.\n\nAVIF offers significantly better compression than JPEG and WebP at equivalent visual quality, but encoding is CPU-intensive.\n\n**Parameters:**\n\n| Field | Type | Default | Description |\n|---|---|---|---|\n| `file` | File | — | Image file to convert |\n| `quality` | int | 60 | AV1 quality (0 = lossless, 63 = worst) |\n\n**Response (`202 Accepted`):**\n```json\n{\n  \"success\": true,\n  \"data\": { \"job_id\": \"<uuid>\", \"status\": \"pending\" },\n  \"message\": \"Job queued\"\n}\n```"
                     },
@@ -508,8 +560,15 @@
                         },
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/image/resize",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "image", "resize"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "image",
+                                "resize"
+                            ]
                         },
                         "description": "Resize an image to the specified dimensions using FFmpeg.\n\nAt least one of `width` or `height` must be provided.\n\n**Parameters:**\n\n| Field | Type | Default | Description |\n|---|---|---|---|\n| `file` | File | — | Image to resize |\n| `width` | int or null | null | Target width in pixels |\n| `height` | int or null | null | Target height in pixels |\n| `fit` | string | `cover` | Resize mode: `cover`, `contain`, or `fill` |\n\n**Fit modes:**\n- `cover` — Crop to exactly fill the target rectangle (no empty space).\n- `contain` — Scale to fit within the target rectangle, adding letterboxing.\n- `fill` — Stretch to exact dimensions, ignoring aspect ratio."
                     },
@@ -529,6 +588,272 @@
                                     "if (res.data && res.data.job_id) {",
                                     "    pm.collectionVariables.set('jobId', res.data.job_id);",
                                     "    console.log('jobId saved:', res.data.job_id);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Convert to Format",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "file",
+                                    "type": "file",
+                                    "src": [],
+                                    "description": "Image to convert. Accepted formats: JPEG, PNG, GIF, WebP, TIFF, BMP."
+                                },
+                                {
+                                    "key": "output_format",
+                                    "value": "png",
+                                    "type": "text",
+                                    "description": "Target format: png, jpg, jpeg, gif, bmp, tiff, tif, webp, avif."
+                                },
+                                {
+                                    "key": "quality",
+                                    "value": "85",
+                                    "type": "text",
+                                    "description": "Quality hint (0–100). Used for JPEG output. Default: 85."
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/image/convert/format",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "image",
+                                "convert",
+                                "format"
+                            ]
+                        },
+                        "description": "Convert an image to **any supported raster format** using `ffmpeg`.\n\nSupported output formats: `png`, `jpg`/`jpeg`, `gif`, `bmp`, `tiff`/`tif`, `webp`, `avif`.\n\n**Response (`202 Accepted`):**\n```json\n{\n  \"success\": true,\n  \"data\": { \"job_id\": \"<uuid>\", \"status\": \"pending\" },\n  \"message\": \"Job queued\"\n}\n```"
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "",
+                                    "pm.test('Status 202 Accepted', () => pm.response.to.have.status(202));",
+                                    "pm.test('success is true', () => pm.expect(res.success).to.be.true);",
+                                    "pm.test('job_id is a UUID', () => pm.expect(res.data.job_id).to.match(/^[0-9a-f-]{36}$/i));",
+                                    "pm.test(\"initial status is 'pending'\", () => pm.expect(res.data.status).to.eql('pending'));",
+                                    "",
+                                    "if (res.data && res.data.job_id) {",
+                                    "    pm.collectionVariables.set('jobId', res.data.job_id);",
+                                    "    console.log('jobId saved:', res.data.job_id);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Batch Convert to WebP",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "files",
+                                    "type": "file",
+                                    "src": [],
+                                    "description": "First image file. Add more 'files' fields for additional images (max 20)."
+                                },
+                                {
+                                    "key": "quality",
+                                    "value": "80",
+                                    "type": "text",
+                                    "description": "WebP quality (0–100). Default: 80."
+                                },
+                                {
+                                    "key": "lossless",
+                                    "value": "false",
+                                    "type": "text",
+                                    "description": "Lossless WebP (true/false). Default: false."
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/image/batch/convert/webp",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "image",
+                                "batch",
+                                "convert",
+                                "webp"
+                            ]
+                        },
+                        "description": "Convert **multiple images** to WebP in a single request (max 20 files). One Celery job is created per file.\n\n**Response (`202 Accepted`):**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"jobs\": [\n      { \"job_id\": \"<uuid>\", \"filename\": \"photo.jpg\", \"status\": \"pending\" }\n    ],\n    \"total\": 1\n  },\n  \"message\": \"1 jobs queued\"\n}\n```"
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "",
+                                    "pm.test('Status 202 Accepted', () => pm.response.to.have.status(202));",
+                                    "pm.test('success is true', () => pm.expect(res.success).to.be.true);",
+                                    "pm.test('jobs is an array', () => pm.expect(res.data.jobs).to.be.an('array'));",
+                                    "pm.test('total matches jobs length', () => pm.expect(res.data.total).to.eql(res.data.jobs.length));",
+                                    "pm.test('each job has a UUID', () => {",
+                                    "    res.data.jobs.forEach(j => pm.expect(j.job_id).to.match(/^[0-9a-f-]{36}$/i));",
+                                    "});",
+                                    "",
+                                    "if (res.data.jobs && res.data.jobs.length > 0) {",
+                                    "    pm.collectionVariables.set('jobId', res.data.jobs[0].job_id);",
+                                    "    console.log('jobId saved (first):', res.data.jobs[0].job_id);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Batch Convert to AVIF",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "files",
+                                    "type": "file",
+                                    "src": [],
+                                    "description": "Image file(s) to convert (max 20). Add multiple 'files' fields."
+                                },
+                                {
+                                    "key": "quality",
+                                    "value": "60",
+                                    "type": "text",
+                                    "description": "AVIF quality/CRF (0–63). Lower = better. Default: 60."
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/image/batch/convert/avif",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "image",
+                                "batch",
+                                "convert",
+                                "avif"
+                            ]
+                        },
+                        "description": "Convert **multiple images** to AVIF in a single request (max 20 files). One Celery job is created per file.\n\n**Response (`202 Accepted`):**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"jobs\": [\n      { \"job_id\": \"<uuid>\", \"filename\": \"photo.png\", \"status\": \"pending\" }\n    ],\n    \"total\": 1\n  },\n  \"message\": \"1 jobs queued\"\n}\n```"
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "",
+                                    "pm.test('Status 202 Accepted', () => pm.response.to.have.status(202));",
+                                    "pm.test('success is true', () => pm.expect(res.success).to.be.true);",
+                                    "pm.test('jobs is an array', () => pm.expect(res.data.jobs).to.be.an('array'));",
+                                    "pm.test('total matches jobs length', () => pm.expect(res.data.total).to.eql(res.data.jobs.length));",
+                                    "pm.test('each job has a UUID', () => {",
+                                    "    res.data.jobs.forEach(j => pm.expect(j.job_id).to.match(/^[0-9a-f-]{36}$/i));",
+                                    "});",
+                                    "",
+                                    "if (res.data.jobs && res.data.jobs.length > 0) {",
+                                    "    pm.collectionVariables.set('jobId', res.data.jobs[0].job_id);",
+                                    "    console.log('jobId saved (first):', res.data.jobs[0].job_id);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Batch Convert to Format",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "files",
+                                    "type": "file",
+                                    "src": [],
+                                    "description": "Image file(s) to convert (max 20). Add multiple 'files' fields."
+                                },
+                                {
+                                    "key": "output_format",
+                                    "value": "png",
+                                    "type": "text",
+                                    "description": "Target format: png, jpg, jpeg, gif, bmp, tiff, tif, webp, avif."
+                                },
+                                {
+                                    "key": "quality",
+                                    "value": "85",
+                                    "type": "text",
+                                    "description": "Quality hint (0–100). Default: 85."
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/image/batch/convert/format",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "image",
+                                "batch",
+                                "convert",
+                                "format"
+                            ]
+                        },
+                        "description": "Convert **multiple images** to any supported format in a single request (max 20 files).\n\nSupported output formats: `png`, `jpg`/`jpeg`, `gif`, `bmp`, `tiff`/`tif`, `webp`, `avif`.\n\n**Response (`202 Accepted`):**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"jobs\": [\n      { \"job_id\": \"<uuid>\", \"filename\": \"photo.webp\", \"status\": \"pending\" }\n    ],\n    \"total\": 1\n  },\n  \"message\": \"1 jobs queued\"\n}\n```"
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "",
+                                    "pm.test('Status 202 Accepted', () => pm.response.to.have.status(202));",
+                                    "pm.test('success is true', () => pm.expect(res.success).to.be.true);",
+                                    "pm.test('jobs is an array', () => pm.expect(res.data.jobs).to.be.an('array'));",
+                                    "pm.test('total matches jobs length', () => pm.expect(res.data.total).to.eql(res.data.jobs.length));",
+                                    "pm.test('each job has a UUID', () => {",
+                                    "    res.data.jobs.forEach(j => pm.expect(j.job_id).to.match(/^[0-9a-f-]{36}$/i));",
+                                    "});",
+                                    "",
+                                    "if (res.data.jobs && res.data.jobs.length > 0) {",
+                                    "    pm.collectionVariables.set('jobId', res.data.jobs[0].job_id);",
+                                    "    console.log('jobId saved (first):', res.data.jobs[0].job_id);",
                                     "}"
                                 ]
                             }
@@ -583,8 +908,15 @@
                         },
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/video/convert",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "video", "convert"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "video",
+                                "convert"
+                            ]
                         },
                         "description": "Transcode a video to a different format and/or codec using FFmpeg.\n\n**Parameters:**\n\n| Field | Type | Default | Description |\n|---|---|---|---|\n| `file` | File | — | Video to transcode |\n| `output_format` | string | `mp4` | Output container format |\n| `codec` | string | `libx264` | Video codec |\n| `crf` | int | 23 | Constant Rate Factor (quality) |\n| `preset` | string | `medium` | Encoding speed vs. compression tradeoff |\n\n**Common codec/format pairings:**\n- H.264 → MP4: `codec=libx264`, `output_format=mp4`\n- H.265 → MP4: `codec=libx265`, `output_format=mp4`\n- VP9 → WebM: `codec=libvpx-vp9`, `output_format=webm`\n- AV1 → MKV: `codec=libaom-av1`, `output_format=mkv`"
                     },
@@ -640,8 +972,15 @@
                         },
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/video/rotate",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "video", "rotate"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "video",
+                                "rotate"
+                            ]
                         },
                         "description": "Rotate a video by 90°, 180°, or 270° clockwise.\n\n**Parameters:**\n\n| Field | Type | Default | Description |\n|---|---|---|---|\n| `file` | File | — | Video to rotate |\n| `degrees` | int | 90 | Rotation angle — must be **90**, **180**, or **270** |\n| `no_transcode` | bool | false | Metadata-only rotation (stream copy, no re-encode) |\n\n> ⚠️ Sending any value other than 90, 180, or 270 returns `422 Unprocessable Entity`."
                     },
@@ -702,8 +1041,15 @@
                         },
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/video/resize",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "video", "resize"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "video",
+                                "resize"
+                            ]
                         },
                         "description": "Scale a video to the specified dimensions using FFmpeg.\n\n**Parameters:**\n\n| Field | Type | Default | Description |\n|---|---|---|---|\n| `file` | File | — | Video to scale |\n| `width` | int or null | null | Target width in pixels |\n| `height` | int or null | null | Target height in pixels |\n| `keep_aspect` | bool | true | Preserve original aspect ratio |"
                     },
@@ -758,8 +1104,15 @@
                         },
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/video/trim",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "video", "trim"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "video",
+                                "trim"
+                            ]
                         },
                         "description": "Extract a clip from a video between two timestamps using a fast **stream copy** (no re-encoding, near-instant for large files).\n\n**Parameters:**\n\n| Field | Type | Required | Description |\n|---|---|---|---|\n| `file` | File | ✓ | Source video |\n| `start_time` | string | ✓ | Clip start — `HH:MM:SS` or decimal seconds |\n| `end_time` | string | ✓ | Clip end — `HH:MM:SS` or decimal seconds |\n\n> ℹ️ Stream copy means the output container timestamps may have a small offset relative to the requested times, aligned to the nearest keyframe."
                     },
@@ -808,8 +1161,15 @@
                         },
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/video/thumbnail",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "video", "thumbnail"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "video",
+                                "thumbnail"
+                            ]
                         },
                         "description": "Extract a single frame from a video at the specified timestamp and encode it as a **WebP** image.\n\n**Parameters:**\n\n| Field | Type | Default | Description |\n|---|---|---|---|\n| `file` | File | — | Source video |\n| `timestamp` | string | `00:00:01` | Frame capture timestamp (`HH:MM:SS` or decimal seconds) |\n\nThe output is a lossless WebP image stored in MinIO. Download it via the presigned `result_url` once the job is completed."
                     },
@@ -847,8 +1207,14 @@
                         "header": [],
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/jobs?page=1&page_size=20",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "jobs"],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "jobs"
+                            ],
                             "query": [
                                 {
                                     "key": "page",
@@ -907,8 +1273,15 @@
                         "header": [],
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "jobs", "{{jobId}}"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "jobs",
+                                "{{jobId}}"
+                            ]
                         },
                         "description": "Retrieve the full details and current status of a specific job.\n\nWhen `status == \"completed\"`, `data.result_url` contains a **presigned MinIO download URL** valid for `PRESIGNED_URL_EXPIRE` seconds (default: 1 hour). The URL is automatically saved to the `resultUrl` collection variable.\n\n**Response:**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"status\": \"completed\",\n    \"job_type\": \"image_convert_webp\",\n    \"result_url\": \"https://minio.host/bucket/output/...\",\n    \"error\": null,\n    \"created_at\": \"...\",\n    \"updated_at\": \"...\"\n  }\n}\n```\n\n> ℹ️ Poll this endpoint every 2–5 seconds until `status` is `completed` or `failed`."
                     },
@@ -961,8 +1334,15 @@
                         "header": [],
                         "url": {
                             "raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}",
-                            "host": ["{{baseUrl}}"],
-                            "path": ["api", "v1", "jobs", "{{jobId}}"]
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "jobs",
+                                "{{jobId}}"
+                            ]
                         },
                         "description": "Cancel and permanently delete a job.\n\n- If the job is `pending` or `started`, the Celery task is revoked.\n- Input and output files are removed from MinIO.\n- Returns `204 No Content` on success.\n- The `jobId` and `resultUrl` collection variables are cleared automatically by the test script.\n\n> ⚠️ This action is irreversible. Both the job record and any associated files are permanently deleted."
                     },

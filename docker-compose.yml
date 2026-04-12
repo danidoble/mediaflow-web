@@ -1,11 +1,18 @@
 services:
   web:
+    image: danidoble/mediaflow-web:latest
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - PUBLIC_API_BASE_URL=${PUBLIC_API_BASE_URL:-http://localhost:8000}
+        - PUBLIC_APP_NAME=${PUBLIC_APP_NAME:-MediaFlow}
     ports:
       - "${PUBLIC_APP_PORT:-4321}:80"
-    environment:
-      - PUBLIC_API_BASE_URL=${PUBLIC_API_BASE_URL:-http://localhost:8000}
-      - PUBLIC_APP_NAME=${PUBLIC_APP_NAME:-MediaFlow}
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

@@ -6,6 +6,7 @@ import type {
   HealthData,
   Job,
   JobQueued,
+  BatchJobsQueued,
   JobsPage,
   ListJobsParams,
 } from '../types/api';
@@ -143,6 +144,48 @@ export async function resizeImage(
   if (params.height) fd.append('height', String(params.height));
   fd.append('fit', params.fit);
   return request<ApiEnvelope<JobQueued>>('/image/resize', { method: 'POST', body: fd });
+}
+
+export async function convertToFormat(
+  file: File,
+  output_format: string,
+): Promise<ApiEnvelope<JobQueued>> {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('output_format', output_format);
+  return request<ApiEnvelope<JobQueued>>('/image/convert/format', { method: 'POST', body: fd });
+}
+
+export async function batchConvertToWebp(
+  files: File[],
+  quality: number,
+  lossless: boolean,
+): Promise<ApiEnvelope<BatchJobsQueued>> {
+  const fd = new FormData();
+  files.forEach((f) => fd.append('files', f));
+  fd.append('quality', String(quality));
+  fd.append('lossless', String(lossless));
+  return request<ApiEnvelope<BatchJobsQueued>>('/image/batch/convert/webp', { method: 'POST', body: fd });
+}
+
+export async function batchConvertToAvif(
+  files: File[],
+  quality: number,
+): Promise<ApiEnvelope<BatchJobsQueued>> {
+  const fd = new FormData();
+  files.forEach((f) => fd.append('files', f));
+  fd.append('quality', String(quality));
+  return request<ApiEnvelope<BatchJobsQueued>>('/image/batch/convert/avif', { method: 'POST', body: fd });
+}
+
+export async function batchConvertToFormat(
+  files: File[],
+  output_format: string,
+): Promise<ApiEnvelope<BatchJobsQueued>> {
+  const fd = new FormData();
+  files.forEach((f) => fd.append('files', f));
+  fd.append('output_format', output_format);
+  return request<ApiEnvelope<BatchJobsQueued>>('/image/batch/convert/format', { method: 'POST', body: fd });
 }
 
 // ── Video endpoints ───────────────────────────────────────────────────────────

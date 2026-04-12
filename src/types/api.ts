@@ -42,6 +42,7 @@ export type JobStatus = 'pending' | 'started' | 'completed' | 'failed' | 'cancel
 export type JobType =
   | 'image_convert_webp'
   | 'image_convert_avif'
+  | 'image_convert_format'
   | 'image_resize'
   | 'video_convert'
   | 'video_rotate'
@@ -69,6 +70,17 @@ export interface JobsPage {
 export interface JobQueued {
   job_id: string;
   status: 'pending';
+}
+
+export interface BatchJobItem {
+  job_id: string;
+  filename: string;
+  status: 'pending';
+}
+
+export interface BatchJobsQueued {
+  jobs: BatchJobItem[];
+  total: number;
 }
 
 // Query params for listing jobs

@@ -1,0 +1,8 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { ImageBatchAvifPage } from '../../../components/image/ImageBatchAvifPage';
+import '../../../styles/global.css';
+---
+<Layout title="Batch Convert to AVIF">
+  <ImageBatchAvifPage client:only="react" />
+</Layout>

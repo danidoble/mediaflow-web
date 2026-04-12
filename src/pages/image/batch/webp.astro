@@ -1,0 +1,8 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { ImageBatchWebpPage } from '../../../components/image/ImageBatchWebpPage';
+import '../../../styles/global.css';
+---
+<Layout title="Batch Convert to WebP">
+  <ImageBatchWebpPage client:only="react" />
+</Layout>

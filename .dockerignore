@@ -1,6 +1,48 @@
-node_modules
-dist
-.astro
+# Dependencies (rebuilt inside the container)
+node_modules/
+
+# Build output (generated during docker build)
+dist/
+.astro/
+
+# Environment & secrets — NEVER al image
 .env
-.env.local
+.env.*
+!.env.example
+
+# Editor & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# CI / CD
+.github/
+.gitlab-ci.yml
+
+# Docs & dev files
+README.md
+CLAUDE.md
+*.postman_collection.json
+*.postman_environment.json
+
+# Logs
 *.log
+npm-debug.log*
+
+# Docker itself (no inception)
+docker-compose.yml
+docker-compose.override.yml
+Dockerfile*
+.dockerignore
+
+# Test / coverage
+coverage/
+*.test.*
+*.spec.*

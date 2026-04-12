@@ -32,6 +32,8 @@ import {
   List,
   LogOut,
   User,
+  Layers,
+  Images,
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 
@@ -58,7 +60,16 @@ const NAV: NavGroup[] = [
     items: [
       { label: 'Convert to WebP', href: '/image/webp', icon: <Wand2 className="h-4 w-4" /> },
       { label: 'Convert to AVIF', href: '/image/avif', icon: <ImageIcon className="h-4 w-4" /> },
+      { label: 'Convert to Format', href: '/image/format', icon: <Layers className="h-4 w-4" /> },
       { label: 'Resize Image', href: '/image/resize', icon: <Crop className="h-4 w-4" /> },
+    ],
+  },
+  {
+    title: 'Batch Images',
+    items: [
+      { label: 'Batch WebP', href: '/image/batch/webp', icon: <Images className="h-4 w-4" /> },
+      { label: 'Batch AVIF', href: '/image/batch/avif', icon: <Images className="h-4 w-4" /> },
+      { label: 'Batch Format', href: '/image/batch/format', icon: <Images className="h-4 w-4" /> },
     ],
   },
   {
