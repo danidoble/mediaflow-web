@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { VideoThumbnailPage } from '../../components/video/VideoThumbnailPage';
+import '../../styles/global.css';
+---
+<Layout title="Extract Thumbnail">
+  <VideoThumbnailPage client:only="react" />
+</Layout>

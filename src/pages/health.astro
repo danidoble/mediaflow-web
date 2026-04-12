@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { HealthPage } from '../components/HealthPage';
+import '../styles/global.css';
+---
+<Layout title="System Health">
+  <HealthPage client:only="react" />
+</Layout>

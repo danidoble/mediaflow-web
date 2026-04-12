@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { VideoResizePage } from '../../components/video/VideoResizePage';
+import '../../styles/global.css';
+---
+<Layout title="Resize Video">
+  <VideoResizePage client:only="react" />
+</Layout>

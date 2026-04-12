@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ImageWebpPage } from '../../components/image/ImageWebpPage';
+import '../../styles/global.css';
+---
+<Layout title="Convert to WebP">
+  <ImageWebpPage client:only="react" />
+</Layout>

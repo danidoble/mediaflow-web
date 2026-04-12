@@ -1,0 +1,54 @@
+---
+import { ClientRouter } from 'astro:transitions';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'MediaFlow',
+  description = 'Async media conversion — WebP, AVIF, video transcoding and more.',
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content={description} />
+    <title>{title} | MediaFlow</title>
+    <ClientRouter />
+    <!-- Apply theme before paint on initial load and before every ClientRouter swap -->
+    <script is:inline>
+      (function () {
+        function applyTheme(el) {
+          const stored = localStorage.getItem('mf_theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (stored === 'dark' || (!stored && prefersDark)) {
+            el.classList.add('dark');
+          } else {
+            el.classList.remove('dark');
+          }
+        }
+        // Initial load
+        applyTheme(document.documentElement);
+        // Before ClientRouter swaps the DOM, apply theme to the incoming document
+        // so the new <html> already has the correct class — no flash
+        document.addEventListener('astro:before-swap', function (e) {
+          applyTheme(e.newDocument.documentElement);
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style>
+  html, body {
+    margin: 0;
+    min-height: 100%;
+  }
+</style>

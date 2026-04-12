@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { VideoConvertPage } from '../../components/video/VideoConvertPage';
+import '../../styles/global.css';
+---
+<Layout title="Convert Video">
+  <VideoConvertPage client:only="react" />
+</Layout>

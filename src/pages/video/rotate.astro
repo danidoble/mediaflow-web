@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { VideoRotatePage } from '../../components/video/VideoRotatePage';
+import '../../styles/global.css';
+---
+<Layout title="Rotate Video">
+  <VideoRotatePage client:only="react" />
+</Layout>

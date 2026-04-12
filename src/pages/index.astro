@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { LandingPage } from '../components/LandingPage';
+import '../styles/global.css';
+---
+<Layout title="Home" description="Async media conversion — WebP, AVIF, video transcoding and more.">
+  <LandingPage client:only="react" />
+</Layout>

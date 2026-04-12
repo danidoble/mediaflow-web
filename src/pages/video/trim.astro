@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { VideoTrimPage } from '../../components/video/VideoTrimPage';
+import '../../styles/global.css';
+---
+<Layout title="Trim Video">
+  <VideoTrimPage client:only="react" />
+</Layout>
