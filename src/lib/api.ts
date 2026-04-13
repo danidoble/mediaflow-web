@@ -12,7 +12,7 @@ import type {
 } from '../types/api';
 import { getAccessToken, getRefreshToken, saveTokens, clearAuth } from './auth';
 
-const BASE = import.meta.env.PUBLIC_API_BASE_URL ?? 'http://localhost:8000';
+const BASE = import.meta.env.PUBLIC_API_BASE_URL || '';
 const API = `${BASE}/api/v1`;
 
 // ── Core fetch wrapper ────────────────────────────────────────────────────────
