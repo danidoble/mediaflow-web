@@ -12,7 +12,6 @@ import {
   Download,
   Ban,
 } from 'lucide-react';
-import { cn } from '../lib/utils';
 
 const STATUS_LABELS: Record<string, string> = {
   pending: 'Pending',
@@ -115,17 +114,33 @@ export function JobPolling({ jobId, onDone }: JobPollingProps) {
       </div>
 
       {isActive && (
-        <Progress
-          value={job.status === 'started' ? 60 : 20}
-          className={cn('h-1.5', job.status === 'started' && 'animate-pulse')}
-        />
+        <div className="space-y-1">
+          <Progress
+            value={
+              job.status === 'started'
+                ? (job.progress != null ? job.progress : 10)
+                : 5
+            }
+            className="h-1.5"
+          />
+          {job.status === 'started' && job.progress != null && (
+            <p className="text-xs text-muted-foreground text-right">{job.progress}%</p>
+          )}
+        </div>
       )}
 
       {isFailed && job.error && (
         <p className="text-xs text-destructive">{job.error}</p>
       )}
 
-      {isCompleted && job.result_url && (
+      {isCompleted && job.result_expired && (
+        <div className="flex items-center gap-2 rounded-lg border border-amber-300/50 bg-amber-50/50 dark:bg-amber-950/20 p-3 text-sm text-amber-700 dark:text-amber-400">
+          <Clock className="h-4 w-4 shrink-0" />
+          This media has expired and is no longer available.
+        </div>
+      )}
+
+      {isCompleted && job.result_url && !job.result_expired && (
         <Button asChild size="sm" className="gap-2">
           <a href={job.result_url} target="_blank" rel="noreferrer" download>
             <Download className="h-4 w-4" />

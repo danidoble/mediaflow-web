@@ -4,10 +4,12 @@ import { Label } from '../ui/label';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Switch } from '../ui/switch';
 import { rotateVideo } from '../../lib/api';
+import { NotifyEmailField } from '../NotifyEmailField';
 
 export function VideoRotatePage() {
   const [degrees, setDegrees] = useState('90');
   const [noTranscode, setNoTranscode] = useState(false);
+  const [notifyEmail, setNotifyEmail] = useState<string | undefined>();
 
   return (
     <ToolPage
@@ -16,7 +18,7 @@ export function VideoRotatePage() {
       acceptedFormats="MP4, WebM, MKV, MOV, AVI, MPEG, OGG, 3GPP"
       acceptMime="video/*"
       onSubmit={async (file) => {
-        const res = await rotateVideo(file, Number(degrees), noTranscode);
+        const res = await rotateVideo(file, Number(degrees), noTranscode, notifyEmail);
         return res.data.job_id;
       }}
       fields={
@@ -48,6 +50,8 @@ export function VideoRotatePage() {
               onCheckedChange={setNoTranscode}
             />
           </div>
+
+          <NotifyEmailField onChange={setNotifyEmail} />
         </div>
       }
     />

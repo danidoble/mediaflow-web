@@ -4,11 +4,13 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { resizeImage } from '../../lib/api';
+import { NotifyEmailField } from '../NotifyEmailField';
 
 export function ImageResizePage() {
   const [width, setWidth] = useState('');
   const [height, setHeight] = useState('');
   const [fit, setFit] = useState('cover');
+  const [notifyEmail, setNotifyEmail] = useState<string | undefined>();
 
   return (
     <ToolPage
@@ -21,6 +23,7 @@ export function ImageResizePage() {
           width: width ? Number(width) : undefined,
           height: height ? Number(height) : undefined,
           fit,
+          notify_email: notifyEmail,
         });
         return res.data.job_id;
       }}
@@ -72,6 +75,8 @@ export function ImageResizePage() {
               ))}
             </RadioGroup>
           </div>
+
+          <NotifyEmailField onChange={setNotifyEmail} />
         </div>
       }
     />

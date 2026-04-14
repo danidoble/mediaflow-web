@@ -15,6 +15,7 @@ import {
   Trash2,
   RefreshCw,
   ExternalLink,
+  Clock,
 } from 'lucide-react';
 import type { Job, JobStatus, JobType } from '../types/api';
 
@@ -179,7 +180,12 @@ export function JobsPage() {
                         </td>
                         <td className="px-4 py-3 text-right">
                           <div className="flex items-center justify-end gap-1">
-                            {job.result_url && (
+                            {job.result_expired && (
+                              <span title="Media expired" className="text-amber-500">
+                                <Clock className="h-3.5 w-3.5" />
+                              </span>
+                            )}
+                            {job.result_url && !job.result_expired && (
                               <Button
                                 variant="ghost"
                                 size="icon"

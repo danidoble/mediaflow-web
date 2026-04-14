@@ -3,10 +3,12 @@ import { ToolPage } from '../ToolPage';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { trimVideo } from '../../lib/api';
+import { NotifyEmailField } from '../NotifyEmailField';
 
 export function VideoTrimPage() {
   const [startTime, setStartTime] = useState('00:00:10');
   const [endTime, setEndTime] = useState('00:01:00');
+  const [notifyEmail, setNotifyEmail] = useState<string | undefined>();
 
   return (
     <ToolPage
@@ -15,7 +17,7 @@ export function VideoTrimPage() {
       acceptedFormats="MP4, WebM, MKV, MOV, AVI, MPEG, OGG, 3GPP"
       acceptMime="video/*"
       onSubmit={async (file) => {
-        const res = await trimVideo(file, startTime, endTime);
+        const res = await trimVideo(file, startTime, endTime, notifyEmail);
         return res.data.job_id;
       }}
       fields={
@@ -48,6 +50,8 @@ export function VideoTrimPage() {
             Both fields accept <code className="bg-muted px-1 rounded text-xs">HH:MM:SS</code> or decimal seconds (e.g. <code className="bg-muted px-1 rounded text-xs">1.5</code>).
             End time must be after start time.
           </p>
+
+          <NotifyEmailField onChange={setNotifyEmail} />
         </div>
       }
     />

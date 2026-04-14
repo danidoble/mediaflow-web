@@ -15,6 +15,7 @@ import {
   HardDrive,
   Film,
   Image,
+  Mail,
   RefreshCw,
   CheckCircle2,
   XCircle,
@@ -59,6 +60,12 @@ const SERVICE_META: {
     icon: Image,
     description: 'WebP encoder from Google libwebp',
   },
+  {
+    key: 'email',
+    label: 'Email / SMTP',
+    icon: Mail,
+    description: 'Job-completion notification emails via SMTP',
+  },
 ];
 
 function HealthContent() {
@@ -83,7 +90,10 @@ function HealthContent() {
     check();
   }, []);
 
-  const allOk = health && Object.values(health).every((v) => v === 'ok');
+  const allOk = health && Object.entries(health).every(([, v]) => v === 'ok' || v === 'not configured');
+  const coreOk = health && Object.entries(health)
+    .filter(([k]) => k !== 'email')
+    .every(([, v]) => v === 'ok');
 
   const inner = (
     <>
@@ -102,18 +112,18 @@ function HealthContent() {
       {health && (
         <div
           className={`flex items-center gap-3 rounded-lg border px-4 py-3 mb-6 text-sm ${
-            allOk
+            coreOk
               ? 'border-green-500/30 bg-green-500/5 text-green-700 dark:text-green-400'
               : 'border-destructive/30 bg-destructive/5 text-destructive'
           }`}
         >
-          {allOk ? (
+          {coreOk ? (
             <CheckCircle2 className="h-5 w-5 shrink-0" />
           ) : (
             <XCircle className="h-5 w-5 shrink-0" />
           )}
           <div>
-            <p className="font-medium">{allOk ? 'All systems operational' : 'Degraded service'}</p>
+            <p className="font-medium">{coreOk ? 'All systems operational' : 'Degraded service'}</p>
             {lastChecked && (
               <p className="text-xs opacity-70 mt-0.5">Last checked: {lastChecked.toLocaleTimeString()}</p>
             )}
@@ -126,6 +136,7 @@ function HealthContent() {
         {SERVICE_META.map(({ key, label, icon: Icon, description }) => {
           const status = health?.[key];
           const ok = status === 'ok';
+          const optional = status === 'not configured';
 
           return (
             <Card key={key}>
@@ -141,10 +152,12 @@ function HealthContent() {
                       className={`ml-auto text-xs ${
                         ok
                           ? 'border-green-500/40 text-green-600 dark:text-green-400'
+                          : optional
+                          ? 'border-amber-500/40 text-amber-600 dark:text-amber-400'
                           : 'border-destructive/40 text-destructive'
                       }`}
                     >
-                      {ok ? 'OK' : status ?? 'error'}
+                      {ok ? 'OK' : optional ? 'not configured' : (status ?? 'error')}
                     </Badge>
                   )}
                 </CardTitle>

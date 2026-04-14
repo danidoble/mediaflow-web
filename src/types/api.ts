@@ -34,6 +34,7 @@ export interface HealthData {
   minio: ServiceStatus;
   ffmpeg: ServiceStatus;
   cwebp: ServiceStatus;
+  email: ServiceStatus;
 }
 
 // Jobs
@@ -55,6 +56,8 @@ export interface Job {
   status: JobStatus;
   job_type: JobType;
   result_url?: string | null;
+  result_expired?: boolean | null;
+  progress?: number | null;
   error?: string | null;
   created_at: string;
   updated_at: string;

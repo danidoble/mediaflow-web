@@ -4,10 +4,12 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
 import { batchConvertToWebp } from '../../lib/api';
+import { NotifyEmailField } from '../NotifyEmailField';
 
 export function ImageBatchWebpPage() {
   const [quality, setQuality] = useState(80);
   const [lossless, setLossless] = useState(false);
+  const [notifyEmail, setNotifyEmail] = useState<string | undefined>();
 
   return (
     <BatchToolPage
@@ -17,7 +19,7 @@ export function ImageBatchWebpPage() {
       acceptMime="image/*"
       maxFiles={20}
       onSubmit={async (files) => {
-        const res = await batchConvertToWebp(files, quality, lossless);
+        const res = await batchConvertToWebp(files, quality, lossless, notifyEmail);
         return res.data.jobs;
       }}
       fields={
@@ -53,6 +55,8 @@ export function ImageBatchWebpPage() {
               onCheckedChange={setLossless}
             />
           </div>
+
+          <NotifyEmailField onChange={setNotifyEmail} />
         </div>
       }
     />

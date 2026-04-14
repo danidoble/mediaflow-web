@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ToolPage } from '../ToolPage';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { convertVideo } from '../../lib/api';
+import { Checkbox } from '../ui/checkbox';
+import { useAuth } from '../AuthContext';
+import { convertVideo, getHealth } from '../../lib/api';
 
 const CODEC_FORMAT: Record<string, string> = {
   libx264: 'mp4',
@@ -13,14 +15,31 @@ const CODEC_FORMAT: Record<string, string> = {
 };
 
 export function VideoConvertPage() {
+  const { user } = useAuth();
   const [codec, setCodec] = useState('libx264');
   const [outputFormat, setOutputFormat] = useState('mp4');
   const [crf, setCrf] = useState(23);
   const [preset, setPreset] = useState('medium');
+  const [notifyEnabled, setNotifyEnabled] = useState(false);
+  const [notifyEmail, setNotifyEmail] = useState('');
+  const [emailConfigured, setEmailConfigured] = useState(false);
+
+  useEffect(() => {
+    getHealth()
+      .then((res) => setEmailConfigured(res.data.email === 'ok'))
+      .catch(() => setEmailConfigured(false));
+  }, []);
 
   const handleCodecChange = (val: string) => {
     setCodec(val);
     setOutputFormat(CODEC_FORMAT[val] ?? 'mp4');
+  };
+
+  const handleNotifyToggle = (checked: boolean) => {
+    setNotifyEnabled(checked);
+    if (checked && !notifyEmail && user?.email) {
+      setNotifyEmail(user.email);
+    }
   };
 
   return (
@@ -30,7 +49,13 @@ export function VideoConvertPage() {
       acceptedFormats="MP4, WebM, MKV, MOV, AVI, MPEG, OGG, 3GPP"
       acceptMime="video/*"
       onSubmit={async (file) => {
-        const res = await convertVideo(file, { output_format: outputFormat, codec, crf, preset });
+        const res = await convertVideo(file, {
+          output_format: outputFormat,
+          codec,
+          crf,
+          preset,
+          notify_email: notifyEnabled && notifyEmail ? notifyEmail : undefined,
+        });
         return res.data.job_id;
       }}
       fields={
@@ -89,6 +114,30 @@ export function VideoConvertPage() {
               Slower presets = smaller files at higher CPU cost
             </p>
           </div>
+
+          {emailConfigured && (
+          <div className="space-y-2 rounded-lg border p-3">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="notify-enabled"
+                checked={notifyEnabled}
+                onCheckedChange={(v) => handleNotifyToggle(Boolean(v))}
+              />
+              <Label htmlFor="notify-enabled" className="cursor-pointer font-normal">
+                Notify me by email when done
+              </Label>
+            </div>
+            {notifyEnabled && (
+              <Input
+                type="email"
+                placeholder="your@email.com"
+                value={notifyEmail}
+                onChange={(e) => setNotifyEmail(e.target.value)}
+                autoComplete="email"
+              />
+            )}
+          </div>
+          )}
         </div>
       }
     />

@@ -3,11 +3,13 @@ import { BatchToolPage } from '../BatchToolPage';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { batchConvertToFormat } from '../../lib/api';
+import { NotifyEmailField } from '../NotifyEmailField';
 
 const FORMATS = ['png', 'jpg', 'gif', 'bmp', 'tiff', 'webp', 'avif'] as const;
 
 export function ImageBatchFormatPage() {
   const [outputFormat, setOutputFormat] = useState<string>('png');
+  const [notifyEmail, setNotifyEmail] = useState<string | undefined>();
 
   return (
     <BatchToolPage
@@ -17,27 +19,31 @@ export function ImageBatchFormatPage() {
       acceptMime="image/*"
       maxFiles={20}
       onSubmit={async (files) => {
-        const res = await batchConvertToFormat(files, outputFormat);
+        const res = await batchConvertToFormat(files, outputFormat, notifyEmail);
         return res.data.jobs;
       }}
       fields={
-        <div className="space-y-1.5">
-          <Label htmlFor="output_format">Output format</Label>
-          <Select value={outputFormat} onValueChange={setOutputFormat}>
-            <SelectTrigger id="output_format">
-              <SelectValue placeholder="Select format" />
-            </SelectTrigger>
-            <SelectContent>
-              {FORMATS.map((f) => (
-                <SelectItem key={f} value={f}>
-                  {f.toUpperCase()}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <p className="text-xs text-muted-foreground">
-            Supported: PNG, JPG, GIF, BMP, TIFF, WebP, AVIF
-          </p>
+        <div className="space-y-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="output_format">Output format</Label>
+            <Select value={outputFormat} onValueChange={setOutputFormat}>
+              <SelectTrigger id="output_format">
+                <SelectValue placeholder="Select format" />
+              </SelectTrigger>
+              <SelectContent>
+                {FORMATS.map((f) => (
+                  <SelectItem key={f} value={f}>
+                    {f.toUpperCase()}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Supported: PNG, JPG, GIF, BMP, TIFF, WebP, AVIF
+            </p>
+          </div>
+
+          <NotifyEmailField onChange={setNotifyEmail} />
         </div>
       }
     />

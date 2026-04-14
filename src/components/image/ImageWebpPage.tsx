@@ -4,10 +4,12 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
 import { convertToWebp } from '../../lib/api';
+import { NotifyEmailField } from '../NotifyEmailField';
 
 export function ImageWebpPage() {
   const [quality, setQuality] = useState(80);
   const [lossless, setLossless] = useState(false);
+  const [notifyEmail, setNotifyEmail] = useState<string | undefined>();
 
   return (
     <ToolPage
@@ -16,7 +18,7 @@ export function ImageWebpPage() {
       acceptedFormats="JPEG, PNG, GIF, WebP, TIFF, BMP"
       acceptMime="image/*"
       onSubmit={async (file) => {
-        const res = await convertToWebp(file, quality, lossless);
+        const res = await convertToWebp(file, quality, lossless, notifyEmail);
         return res.data.job_id;
       }}
       fields={
@@ -52,6 +54,8 @@ export function ImageWebpPage() {
               onCheckedChange={setLossless}
             />
           </div>
+
+          <NotifyEmailField onChange={setNotifyEmail} />
         </div>
       }
     />

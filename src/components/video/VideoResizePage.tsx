@@ -4,11 +4,13 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
 import { resizeVideo } from '../../lib/api';
+import { NotifyEmailField } from '../NotifyEmailField';
 
 export function VideoResizePage() {
   const [width, setWidth] = useState('');
   const [height, setHeight] = useState('');
   const [keepAspect, setKeepAspect] = useState(true);
+  const [notifyEmail, setNotifyEmail] = useState<string | undefined>();
 
   return (
     <ToolPage
@@ -21,6 +23,7 @@ export function VideoResizePage() {
           width: width ? Number(width) : undefined,
           height: height ? Number(height) : undefined,
           keep_aspect: keepAspect,
+          notify_email: notifyEmail,
         });
         return res.data.job_id;
       }}
@@ -67,6 +70,8 @@ export function VideoResizePage() {
               onCheckedChange={setKeepAspect}
             />
           </div>
+
+          <NotifyEmailField onChange={setNotifyEmail} />
         </div>
       }
     />

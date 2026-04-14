@@ -116,43 +116,50 @@ export async function convertToWebp(
   file: File,
   quality: number,
   lossless: boolean,
+  notify_email?: string,
 ): Promise<ApiEnvelope<JobQueued>> {
   const fd = new FormData();
   fd.append('file', file);
   fd.append('quality', String(quality));
   fd.append('lossless', String(lossless));
+  if (notify_email) fd.append('notify_email', notify_email);
   return request<ApiEnvelope<JobQueued>>('/image/convert/webp', { method: 'POST', body: fd });
 }
 
 export async function convertToAvif(
   file: File,
   quality: number,
+  notify_email?: string,
 ): Promise<ApiEnvelope<JobQueued>> {
   const fd = new FormData();
   fd.append('file', file);
   fd.append('quality', String(quality));
+  if (notify_email) fd.append('notify_email', notify_email);
   return request<ApiEnvelope<JobQueued>>('/image/convert/avif', { method: 'POST', body: fd });
 }
 
 export async function resizeImage(
   file: File,
-  params: { width?: number; height?: number; fit: string },
+  params: { width?: number; height?: number; fit: string; notify_email?: string },
 ): Promise<ApiEnvelope<JobQueued>> {
   const fd = new FormData();
   fd.append('file', file);
   if (params.width) fd.append('width', String(params.width));
   if (params.height) fd.append('height', String(params.height));
   fd.append('fit', params.fit);
+  if (params.notify_email) fd.append('notify_email', params.notify_email);
   return request<ApiEnvelope<JobQueued>>('/image/resize', { method: 'POST', body: fd });
 }
 
 export async function convertToFormat(
   file: File,
   output_format: string,
+  notify_email?: string,
 ): Promise<ApiEnvelope<JobQueued>> {
   const fd = new FormData();
   fd.append('file', file);
   fd.append('output_format', output_format);
+  if (notify_email) fd.append('notify_email', notify_email);
   return request<ApiEnvelope<JobQueued>>('/image/convert/format', { method: 'POST', body: fd });
 }
 
@@ -160,31 +167,37 @@ export async function batchConvertToWebp(
   files: File[],
   quality: number,
   lossless: boolean,
+  notify_email?: string,
 ): Promise<ApiEnvelope<BatchJobsQueued>> {
   const fd = new FormData();
   files.forEach((f) => fd.append('files', f));
   fd.append('quality', String(quality));
   fd.append('lossless', String(lossless));
+  if (notify_email) fd.append('notify_email', notify_email);
   return request<ApiEnvelope<BatchJobsQueued>>('/image/batch/convert/webp', { method: 'POST', body: fd });
 }
 
 export async function batchConvertToAvif(
   files: File[],
   quality: number,
+  notify_email?: string,
 ): Promise<ApiEnvelope<BatchJobsQueued>> {
   const fd = new FormData();
   files.forEach((f) => fd.append('files', f));
   fd.append('quality', String(quality));
+  if (notify_email) fd.append('notify_email', notify_email);
   return request<ApiEnvelope<BatchJobsQueued>>('/image/batch/convert/avif', { method: 'POST', body: fd });
 }
 
 export async function batchConvertToFormat(
   files: File[],
   output_format: string,
+  notify_email?: string,
 ): Promise<ApiEnvelope<BatchJobsQueued>> {
   const fd = new FormData();
   files.forEach((f) => fd.append('files', f));
   fd.append('output_format', output_format);
+  if (notify_email) fd.append('notify_email', notify_email);
   return request<ApiEnvelope<BatchJobsQueued>>('/image/batch/convert/format', { method: 'POST', body: fd });
 }
 
@@ -192,7 +205,7 @@ export async function batchConvertToFormat(
 
 export async function convertVideo(
   file: File,
-  params: { output_format: string; codec: string; crf: number; preset: string },
+  params: { output_format: string; codec: string; crf: number; preset: string; notify_email?: string },
 ): Promise<ApiEnvelope<JobQueued>> {
   const fd = new FormData();
   fd.append('file', file);
@@ -200,6 +213,7 @@ export async function convertVideo(
   fd.append('codec', params.codec);
   fd.append('crf', String(params.crf));
   fd.append('preset', params.preset);
+  if (params.notify_email) fd.append('notify_email', params.notify_email);
   return request<ApiEnvelope<JobQueued>>('/video/convert', { method: 'POST', body: fd });
 }
 
@@ -207,23 +221,26 @@ export async function rotateVideo(
   file: File,
   degrees: number,
   no_transcode: boolean,
+  notify_email?: string,
 ): Promise<ApiEnvelope<JobQueued>> {
   const fd = new FormData();
   fd.append('file', file);
   fd.append('degrees', String(degrees));
   fd.append('no_transcode', String(no_transcode));
+  if (notify_email) fd.append('notify_email', notify_email);
   return request<ApiEnvelope<JobQueued>>('/video/rotate', { method: 'POST', body: fd });
 }
 
 export async function resizeVideo(
   file: File,
-  params: { width?: number; height?: number; keep_aspect: boolean },
+  params: { width?: number; height?: number; keep_aspect: boolean; notify_email?: string },
 ): Promise<ApiEnvelope<JobQueued>> {
   const fd = new FormData();
   fd.append('file', file);
   if (params.width) fd.append('width', String(params.width));
   if (params.height) fd.append('height', String(params.height));
   fd.append('keep_aspect', String(params.keep_aspect));
+  if (params.notify_email) fd.append('notify_email', params.notify_email);
   return request<ApiEnvelope<JobQueued>>('/video/resize', { method: 'POST', body: fd });
 }
 
@@ -231,21 +248,25 @@ export async function trimVideo(
   file: File,
   start_time: string,
   end_time: string,
+  notify_email?: string,
 ): Promise<ApiEnvelope<JobQueued>> {
   const fd = new FormData();
   fd.append('file', file);
   fd.append('start_time', start_time);
   fd.append('end_time', end_time);
+  if (notify_email) fd.append('notify_email', notify_email);
   return request<ApiEnvelope<JobQueued>>('/video/trim', { method: 'POST', body: fd });
 }
 
 export async function extractThumbnail(
   file: File,
   timestamp: string,
+  notify_email?: string,
 ): Promise<ApiEnvelope<JobQueued>> {
   const fd = new FormData();
   fd.append('file', file);
   fd.append('timestamp', timestamp);
+  if (notify_email) fd.append('notify_email', notify_email);
   return request<ApiEnvelope<JobQueued>>('/video/thumbnail', { method: 'POST', body: fd });
 }
 
